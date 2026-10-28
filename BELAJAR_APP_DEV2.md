@@ -49,33 +49,12 @@ Build, Test, dan Release adalah inti **CI/CD**: integrasi, pengujian, dan deploy
 ### Contoh Static (HTML + CSS + JS)
 
 ```html
-<!DOCTYPE html>
 <html>
-<head>
-  <title>Static Site</title>
-  <style>
-    body { font-family: Arial; background: #f4f4f4; padding: 20px; }
-    h1 { color: #2c3e50; }
-    button { background: #3498db; color: white; border: none; padding: 8px 14px; }
-  </style>
-</head>
+<style> h1 { color: blue; } </style>
 <body>
-  <h1>Daftar Buku</h1>
-  <!-- Data ditulis langsung, tidak dari database -->
-  <ul>
-    <li>Laskar Pelangi</li>
-    <li>Bumi Manusia</li>
-  </ul>
-  <p>Hari ini: 28/10/2026</p>
-  <button onclick="sapa()">Klik</button>
-  <p id="pesan"></p>
-
-  <script>
-    // JS berjalan di browser (client-side)
-    function sapa() {
-      document.getElementById("pesan").innerHTML = "Halo, selamat datang!";
-    }
-  </script>
+  <h1>Hello World</h1>
+  <p>Tanggal: 28/10/2026</p>   <!-- ditulis manual, tidak berubah -->
+  <button onclick="alert('Halo!')">Klik</button>
 </body>
 </html>
 ```
@@ -83,32 +62,24 @@ Build, Test, dan Release adalah inti **CI/CD**: integrasi, pengujian, dan deploy
 ### Contoh Dynamic (PHP + MySQL)
 
 ```php
-<!DOCTYPE html>
 <html>
-<head>
-  <title>Dynamic Site</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-  </style>
-</head>
 <body>
-  <h1>Daftar Buku</h1>
-  <!-- Tanggal dibuat server, berubah setiap kali dibuka -->
-  <p>Hari ini: <?php echo date("l, d F Y"); ?></p>
-
-  <ul>
-  <?php
-    // Data diambil dari database
-    $conn = mysqli_connect("localhost", "root", "", "bookstore");
-    $result = mysqli_query($conn, "SELECT title FROM books");
-    while ($row = mysqli_fetch_assoc($result)) {
-      echo "<li>" . htmlspecialchars($row['title']) . "</li>";
-    }
-    mysqli_close($conn);
-  ?>
-  </ul>
+  <h1>Hello World</h1>
+  <p>Tanggal: <?php echo date("d/m/Y"); ?></p>   <!-- dibuat server, selalu berubah -->
 </body>
 </html>
+```
+
+Versi dengan database (kalau diminta):
+
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "bookstore");
+$result = mysqli_query($conn, "SELECT * FROM books");
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['title'] . "<br>";
+}
+?>
 ```
 
 ---
@@ -117,12 +88,13 @@ Build, Test, dan Release adalah inti **CI/CD**: integrasi, pengujian, dan deploy
 
 ### Cara 1: `fopen()`, `fwrite()`, `fclose()`
 
+Urutan yang perlu diingat: **buka → tulis → tutup**.
+
 ```php
 <?php
-$file = fopen("x.txt", "w");      // buka file; dibuat jika belum ada
-fwrite($file, "Hello File\n");    // tulis data
-fclose($file);                    // tutup file
-echo "Berhasil menulis ke x.txt";
+$f = fopen("x.txt", "w");   // buka
+fwrite($f, "Hello");        // tulis
+fclose($f);                 // tutup
 ?>
 ```
 
@@ -130,8 +102,7 @@ echo "Berhasil menulis ke x.txt";
 
 ```php
 <?php
-file_put_contents("x.txt", "Hello File\n");                 // menimpa isi lama
-file_put_contents("x.txt", "Baris baru\n", FILE_APPEND);    // menambah di akhir
+file_put_contents("x.txt", "Hello");
 ?>
 ```
 
